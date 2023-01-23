@@ -1,0 +1,23 @@
+version: '2.1'
+orbs:
+  android: circleci/android@2.0
+
+jobs:
+  build-and-test:
+    executor:
+      name: android/android-machine
+      tag: 2021.10.1
+
+    steps:
+      - checkout
+      - android/restore-gradle-cache
+      - android/restore-build-cache
+      - android/run-tests:
+            test-command: ./gradlew test
+      - android/save-build-cache
+      - android/save-gradle-cache
+
+workflows:
+  test:
+    jobs:
+      - build-and-test
